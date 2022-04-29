@@ -4,7 +4,7 @@ A method for drug-target interactions prediction.
 
 ### usage:
 ```
-1. 释放数据集到src同级目录
+1. release the dataset to the src sibling directory
 2. open run.py and setup hyperparameters
 3. python src/run.py 
 ```
