@@ -11,14 +11,14 @@ A method for drug-target interactions prediction.
 
 ### folder description:
 ```
-preprocessed_data: 使用矩阵补全处理原始的数据。   
-preprocessed_features: 稀疏化相似性数据，然后使用矩阵补全处理原始的特征。  
-get_latent_variable: 将矩阵补全得到的初始特征编码成合适的低维特征。  
-main: 模型主体存放于此。从train.py开始执行。  
-addition: 附加文件，包括计算十次交叉验证的平均值。
+preprocessed_data: Process raw data using matrix completion.  
+preprocessed_features: Make similarities data to become sparse, then use matrix completion to process the original features. 
+get_latent_variable: The initial features obtained by matrix completion are encoded into suitable low-dimensional features.
+main: The model body is stored here. Execute from train.py. 
+addition: Additional file, including calculating the mean of ten cross-validations.
 ```
 ### requirements:
-    pip install requirements.txt
+    pip install -r requirements.txt
 
 ### acknowledgements:
 Thanks to Yamanish et al. and Luo at al. for the datasets, 
