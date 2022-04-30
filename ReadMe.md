@@ -9,7 +9,7 @@ A method for drug-target interactions prediction.
 3. python src/run.py 
 ```
 
-### folder description:
+### folder descriptions:
 ```
 preprocessed_data: Process raw data using matrix completion.  
 preprocessed_features: Make similarities data to become sparse, then use matrix completion to process the original features. 
