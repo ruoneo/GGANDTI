@@ -1,12 +1,12 @@
 """
-预处理部分的参数
+Parameters of preprocessing part
 """
 datasets = ['luo','e','ic', 'gpcr', 'nr']  # , 'luo']  # 'luo',
-percent = 0  # 不平衡性的贡献参数
-seed = 9  # 划分数据集时使用的种子  0-9分别代表第0-9次十折交叉验证
+percent = 0  # Contribution parameters of imbalance
+seed = 9  # The seeds 0-9 used in dividing the dataset represent the 0-9 cross validation
 
 """
-获取潜在变量部分的参数
+Get parameters of potential variable part
 """
 learning_rate = 0.01
 epochs = 200
@@ -17,9 +17,8 @@ dropout = 0
 features = 1
 
 """
-GraphGAN部分的参数, None表示数据待定
+Some parameters of training part
 """
-# 训练部分的一些参数
 modes = ["gen", "dis"]
 lambda_dis = 1e-5
 lr_dis = None
@@ -36,18 +35,18 @@ batch_size_dis = 128
 batch_size_gen = 128
 lambda_con = 1e-3
 constraint = True
-# 注意力机制的参数
+# attention
 attention = True
 lr_att = 0.001
 attention_hidden_size = None
 attention_size = 8
 attention_feature_size = None
 w_decay = 0.00001
-# 采样
+# samply
 window_size = 2
 update_ratio = 1
 
-# 一些文件位置
+# default parameters
 datasets_best_paras = {
     'e': [1e-3, 0.05, 5, 20, 20],
     'ic': [0.001, 0.1, 5, 20, 15],
@@ -66,12 +65,12 @@ emb_filenames = None
 cache_filename = None
 model_log = None
 
-# 保存模型
+# save
 save_model = False
 load_model = False
 save_steps = 10
 
-# 一些其他的参数
+# other
 count = 0
 shape = None
 dp_line = None
