@@ -6,11 +6,11 @@ from src import config
 
 sys.path.append(os.path.abspath('./preprocessing_data'))
 sys.path.append(os.path.abspath('./get_latent_variable'))
-sys.path.append(os.path.abspath('main'))
+sys.path.append(os.path.abspath('./main'))
 sys.path.append(os.path.abspath('./addition'))
 for i in sys.path:
     print(i)
-print("路径输出完成！\n")
+print("Path output complete: \n")
 
 print("百分比：{:.0%},第{}次十折交叉验证开始..".format(config.percent, config.seed))
 
