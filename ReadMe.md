@@ -1,6 +1,6 @@
 Predicting drug-target interactions based on improved graph generative adversarial network and variational graph auto-encoder
 ==============
-A method for drug-target interactions prediction.  
+A framework for drug-target interactions prediction.  
 
 ### usage:
 1. release the dataset to the `/src` sibling directory
