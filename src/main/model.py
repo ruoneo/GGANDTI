@@ -23,7 +23,7 @@ class Attention_(object):
     def __init__(self, embedding_matrix):
         self.shape = embedding_matrix.shape
 
-        # 加载特征  seq = embed
+        # load feature  seq = embed
         features = pickle.load(open(config.initial_features, 'rb')).A.astype(np.float32)
         self.hidden_size = self.shape[1]
         self.attention_size = config.attention_size
@@ -51,7 +51,7 @@ class Attention_(object):
                 tf.nn.l2_loss(self.w1_attention) + tf.nn.l2_loss(self.w2_attention) + tf.nn.l2_loss(self.v_attention) + tf.nn.l2_loss(self.b_attention))
         self.opt = tf.train.AdamOptimizer(config.lr_att).minimize(self.loss)
 
-        # 计算反馈
+        # feedback
         self.bias_vector = tf.placeholder(tf.float32, shape=[None])
         self.node_id = tf.placeholder(tf.int32, shape=[None])
         self.node_neighbor_id = tf.placeholder(tf.int32, shape=[None])
@@ -112,31 +112,31 @@ class Discriminator(object):
         self.n_node = n_node
         self.node_emd_init = node_emd_init
 
-        with tf.variable_scope('discriminator'):  # discriminator下面有个discriminator
+        with tf.variable_scope('discriminator'):  # discriminator
             self.embedding_matrix = tf.get_variable(name="embedding",
                                                     shape=self.node_emd_init.shape,
                                                     initializer=tf.constant_initializer(self.node_emd_init),
                                                     trainable=True)
-            self.bias_vector = tf.Variable(tf.zeros([self.n_node]))  # n个节点的偏置向量
+            self.bias_vector = tf.Variable(tf.zeros([self.n_node]))  # bias initial
 
-        self.node_id = tf.placeholder(tf.int32, shape=[None])  # 左节点 [5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 11, 11]
-        self.node_neighbor_id = tf.placeholder(tf.int32, shape=[None])  # 右节点 [3351, 3907, 43, 5089, 3158, 2476, 1776, 3469, 3105, 2041]
-        self.node_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_id)  # 筛选矩阵 node_id行
-        self.node_neighbor_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_neighbor_id)  # 筛选矩阵 node_neighbor_id行
+        self.node_id = tf.placeholder(tf.int32, shape=[None])  #
+        self.node_neighbor_id = tf.placeholder(tf.int32, shape=[None])  #
+        self.node_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_id)  #
+        self.node_neighbor_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_neighbor_id)
         self.bias = tf.gather(self.bias_vector, self.node_neighbor_id)  # node_neighbor_id行
-        self.score = tf.reduce_sum(tf.multiply(self.node_embedding, self.node_neighbor_embedding), axis=1) + self.bias  # 对应元素相乘 #   sum([10,50] * [10,50]) + [50,]
+        self.score = tf.reduce_sum(tf.multiply(self.node_embedding, self.node_neighbor_embedding), axis=1) + self.bias
 
         if config.constraint:
             self.node_emd_start = tf.constant(self.node_emd_init, dtype=tf.float32)
-            # 约束, 选择部分数据, 随着训练次数, 逐渐调整
+            # constraint
             self.select = tf.random_shuffle(list(range(self.embedding_matrix.shape[0])))[0:30]
-            # 训练前分布
+            # before training
             self.emm_start = tf.nn.embedding_lookup(self.node_emd_start, self.select)
             self.emm_start_cosine_similarity = self.compute_cosine_similarity(self.emm_start)
-            # 单次训练后分布
+            # after training
             self.emm = tf.nn.embedding_lookup(self.embedding_matrix, self.select)
             self.emm_cosine_similarity = self.compute_cosine_similarity(self.emm)
-            # 计算差和
+            # the error
             self.difference = tf.abs(self.emm_cosine_similarity - self.emm_start_cosine_similarity)
         else:
             config.lambda_con = 0
@@ -144,7 +144,7 @@ class Discriminator(object):
 
         if config.attention:
             self.shape = self.embedding_matrix.shape
-            # 加载特征
+            # load fearture
             features = pickle.load(open(config.initial_features, 'rb')).A.astype(np.float32)
             self.hidden_size = self.shape[1]
             self.attention_size = config.attention_size
@@ -156,7 +156,7 @@ class Discriminator(object):
                 self.w2_attention = tf.Variable(tf.random_normal([self.feature_size, self.attention_size], stddev=0.1))
                 self.b_attention = tf.Variable(tf.random_normal([self.attention_size], stddev=0.1))
                 self.v_attention = tf.Variable(tf.random_normal([self.attention_size, 1], stddev=0.1))
-                self.bias_mat = tf.Variable(tf.zeros([self.shape[0], self.shape[0]]))  # n个节点的偏置向量
+                self.bias_mat = tf.Variable(tf.zeros([self.shape[0], self.shape[0]]))
 
             self.value_mid = tf.tanh(tf.add(tf.matmul(self.embedding_matrix, self.w1_attention), tf.matmul(self.features, self.w2_attention)))
             self.value_mid = tf.add(self.value_mid, self.b_attention)
@@ -203,32 +203,31 @@ class Generator(object):
         with tf.variable_scope('generator'):
             self.embedding_matrix = tf.get_variable(name="embedding",
                                                     shape=self.node_emd_init.shape,
-                                                    initializer=tf.constant_initializer(self.node_emd_init),  # 只定义了一个操作,此时并未赋值
-                                                    trainable=True)  # generator的作用范围下面建立了一个名字为embedding的张量,他的numpy值和生成器的初始嵌入节点矩阵一样
-            self.bias_vector = tf.Variable(tf.zeros([self.n_node]))  # 初始偏置为总结点数维度的全0向量
+                                                    initializer=tf.constant_initializer(self.node_emd_init),
+                                                    trainable=True)
+            self.bias_vector = tf.Variable(tf.zeros([self.n_node]))
 
-        self.all_score = tf.matmul(self.embedding_matrix, self.embedding_matrix, transpose_b=True) + self.bias_vector  # 两个嵌入矩阵shape(9149,50)想乘, 再加上9149维度的偏置向量
+        self.all_score = tf.matmul(self.embedding_matrix, self.embedding_matrix, transpose_b=True) + self.bias_vector
 
-        self.node_id = tf.placeholder(tf.int32, shape=[None])  # 建立节点张量的占位符
+        self.node_id = tf.placeholder(tf.int32, shape=[None])
         self.node_neighbor_id = tf.placeholder(tf.int32, shape=[None])
-        self.node_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_id)  # batch_size * n_embed   # 选取后面索引里面对应嵌入矩阵的行组成tensor返回
+        self.node_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_id)  # batch_size * n_embed
         self.node_neighbor_embedding = tf.nn.embedding_lookup(self.embedding_matrix, self.node_neighbor_id)
-        self.bias = tf.gather(self.bias_vector, self.node_neighbor_id)  # 根据邻居id对偏置向量切片    维度等于邻居节点个数
-        self.score = tf.reduce_sum(self.node_embedding * self.node_neighbor_embedding, axis=1) + self.bias  # 对应位置相乘, 然后轴1上求和 + 偏置
-
-        self.prob = tf.clip_by_value(tf.nn.sigmoid(self.score), 1e-5, 1)  # 激活后的值压缩到1e-5 -- 1         node_id x node_neighbor_id
+        self.bias = tf.gather(self.bias_vector, self.node_neighbor_id)
+        self.score = tf.reduce_sum(self.node_embedding * self.node_neighbor_embedding, axis=1) + self.bias  # linear mapping
+        self.prob = tf.clip_by_value(tf.nn.sigmoid(self.score), 1e-5, 1)  # activate
 
         if config.constraint:
             self.node_emd_start = tf.constant(self.node_emd_init, dtype=tf.float32)
-            # 约束, 选择部分数据, 随着训练次数, 逐渐调整,单次数小批量
+            # constraint
             self.select = tf.random_shuffle(list(range(self.embedding_matrix.shape[0])))[0:30]
-            # 训练前分布
+            # the feature distribution before training
             self.emm_start = tf.nn.embedding_lookup(self.node_emd_start, self.select)
             self.emm_start_cosine_similarity = self.compute_cosine_similarity(self.emm_start)
-            # 单次训练后分布
+            # after training
             self.emm = tf.nn.embedding_lookup(self.embedding_matrix, self.select)
             self.emm_cosine_similarity = self.compute_cosine_similarity(self.emm)
-            # 计算差和
+            # calculate error
             self.difference = tf.abs(self.emm_cosine_similarity - self.emm_start_cosine_similarity)
         else:
             config.lambda_con = 0
@@ -237,7 +236,7 @@ class Generator(object):
         if config.attention:
             self.shape = self.embedding_matrix.shape
 
-            # 加载特征
+            # load feature
             features = pickle.load(open(config.initial_features, 'rb')).A.astype(np.float32)
             self.hidden_size = self.shape[1]
             self.attention_size = config.attention_size
@@ -249,7 +248,7 @@ class Generator(object):
                 self.w2_attention = tf.Variable(tf.random_normal([self.feature_size, self.attention_size], stddev=0.1))
                 self.b_attention = tf.Variable(tf.random_normal([self.attention_size], stddev=0.1))
                 self.v_attention = tf.Variable(tf.random_normal([self.attention_size, 1], stddev=0.1))
-                self.bias_mat = tf.Variable(tf.zeros([self.shape[0], self.shape[0]]))  # n个节点的偏置向量
+                self.bias_mat = tf.Variable(tf.zeros([self.shape[0], self.shape[0]]))  # bias parameters
 
             self.value_mid = tf.tanh(tf.add(tf.matmul(self.embedding_matrix, self.w1_attention), tf.matmul(self.features, self.w2_attention)))
             self.value_mid = tf.add(self.value_mid, self.b_attention)
@@ -302,11 +301,11 @@ class GraphGAN(object):
                                                       n_node=self.n_node,
                                                       n_embed=config.n_emb)
 
-        # 如果存在, 清除BFS-trees缓存
+        # if existing, clean BFS-trees cache
         if os.path.isfile(config.cache_filename):
-            print("正在清除缓存...")
+            print("cleaning cache...")
             os.remove(config.cache_filename)
-            print("清除缓存完成!")
+            print("cache is cleaned!")
 
         # construct BFS-trees
         print("constructing BFS-trees...")
@@ -339,22 +338,22 @@ class GraphGAN(object):
         """
 
         trees = {}
-        for root in tqdm.tqdm(nodes):  # 便利每一个节点, 以其为根节点建树
+        for root in tqdm.tqdm(nodes):
             trees[root] = {}
             trees[root][root] = [root]
-            used_nodes = set()  # 记录使用过的节点
-            queue = collections.deque([root])  # 记录BFS遍历过程中搜索到但未为其建立子树的节点
-            while len(queue) > 0:  # 队列不空时重复以下操作进行建树
-                cur_node = queue.popleft()  # 队头出列
-                used_nodes.add(cur_node)  # 将当前元素加入使用过的节点列表
+            used_nodes = set()
+            queue = collections.deque([root])
+            while len(queue) > 0:
+                cur_node = queue.popleft()
+                used_nodes.add(cur_node)
                 if cur_node not in self.graph.keys():
                     continue
-                for sub_node in self.graph[cur_node]:  # 遍历当前节点的邻接子节点
-                    if sub_node not in used_nodes:  # 判断这个邻接子节点是否被使用过
-                        trees[root][cur_node].append(sub_node)  # 将邻接子节点加入当前的邻居节点数组中
-                        trees[root][sub_node] = [cur_node]  # 记录当前邻接子节点的父亲节点
-                        queue.append(sub_node)  # 子节点加入队尾
-                        used_nodes.add(sub_node)  # 记录当前节点已被使用
+                for sub_node in self.graph[cur_node]:
+                    if sub_node not in used_nodes:
+                        trees[root][cur_node].append(sub_node)
+                        trees[root][sub_node] = [cur_node]
+                        queue.append(sub_node)
+                        used_nodes.add(sub_node)
         return trees
 
     def build_generator(self):
@@ -372,7 +371,7 @@ class GraphGAN(object):
 
         print("start training...")
         for epoch in range(config.n_epochs):
-            # 判别器部分
+            # discriminator
             center_nodes, neighbor_nodes, labels, dis_loss = [], [], [], 0
             for d_epoch in range(config.n_epochs_dis):
                 if d_epoch % config.dis_interval == 0:
@@ -383,7 +382,7 @@ class GraphGAN(object):
                                                        self.discriminator.node_neighbor_id: np.array(neighbor_nodes),
                                                        self.discriminator.label: np.array(labels)})
 
-            # 生成器部分
+            # generator
             node_1, node_2, gen_loss, reward = [], [], 0, 0
             for g_epoch in range(config.n_epochs_gen):
                 if g_epoch % config.gen_interval == 0:
