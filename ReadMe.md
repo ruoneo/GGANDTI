@@ -22,6 +22,5 @@ Thanks to Yamanish et al. and Luo at al. for the datasets,
 which helped the research to proceed smoothly.
 
 ### datasets：
-Gold standard datasets from Yamanishi et al. article
-(https://doi.org/10.1093/bioinformatics/btn162) and Luo datasets from Luo et al. article
-(https://doi.org/10.1038/s41467-017-00680-8).
+Gold standard datasets of Yamanishi et al. is available on (http://web.kuicr.kyoto-u.ac.jp/supp/yoshi/drugtarget/) and datasets of Luo et al. is available on
+( https://github.com/luoyunan/DTINet).
