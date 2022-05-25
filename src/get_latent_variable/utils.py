@@ -6,16 +6,10 @@ from sklearn.metrics import auc
 
 
 def read_dataset(dataset, i):
-    """
-    目录是可变的
-    :param dataset:
-    :return:
-    """
     adj_train = pickle.load(open("../../data/datasets/{0}/{1}fold/{0}_adj_train.pkl".format(dataset, i), "rb"))
     train_edges = np.loadtxt("../../data/datasets/{0}/{1}fold/{0}_vgae_train.txt".format(dataset, i), dtype=int)
     test_edges = np.loadtxt("../../data/datasets/{0}/{1}fold/{0}_vgae_test.txt".format(dataset, i), dtype=int)
     test_edges_false = np.loadtxt("../../data/datasets/{0}/{1}fold/{0}_vgae_test_neg.txt".format(dataset, i), dtype=int)
-
     return adj_train, train_edges, test_edges, test_edges_false  # , val_edges, val_edges_false
 
 

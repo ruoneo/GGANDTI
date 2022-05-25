@@ -3,7 +3,7 @@ Predicting drug-target interactions based on improved graph generative adversari
 A framework for drug-target interactions prediction.  
 
 ### usage:
-1. release the dataset to the `src` sibling directory
+1. release the dataset to the `src` sibling directory `data/RawData`
 2. open run.py and setup hyper-parameters in `src/config.py`
 3. python `src/run.py`
 

@@ -15,7 +15,6 @@ for dataset in config.datasets:
     path = "../../data/datasets/{}/feature/".format(dataset)
     if not os.path.exists(path):
         os.makedirs(path)
-
     pickle.dump(feature, open(path + dataset + "_feature.pkl", 'wb'))
 
     print("ok")

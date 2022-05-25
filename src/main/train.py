@@ -6,7 +6,7 @@ import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = '1'
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 tf.disable_eager_execution()
 
@@ -47,7 +47,7 @@ for dataset in config.datasets:
         prcs_key = sorted(config.auprcs, reverse=True)
 
         for key in rocs_key:
-            if key < 1:  # 存在精度问题，比如1精度为1.00000000000002
+            if key < 1:
                 rocs = config.aurocs[key]
                 break
         for key in prcs_key:

@@ -22,6 +22,12 @@ for dataset in config.datasets:
     else:
         adj, dp_line = load_yam_data(dataset)
 
+    if not os.path.exists("../../data/datasets"):
+        os.mkdir("../../data/datasets")
+    if not os.path.exists("../../data/datasets/{}".format(dataset)):
+        os.mkdir("../../data/datasets/{}".format(dataset))
+    if not os.path.exists("../../data/datasets/{}/orig".format(dataset)):
+        os.mkdir("../../data/datasets/{}/orig/".format(dataset))
     np.savetxt("../../data/datasets/{}/orig/dp_line.txt".format(dataset), np.array([dataset, str(dp_line)]), fmt='%s')
 
     # 获得不同不平衡性的数据

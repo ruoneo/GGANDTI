@@ -1,3 +1,4 @@
+import os
 import random
 
 import numpy as np
@@ -10,9 +11,7 @@ def load_luo_data(dataset):
     dp = np.loadtxt('../../data/RawData/luo/mat_drug_protein.txt'.format(dataset), dtype=int)
     dd = np.loadtxt('../../data/RawData/luo/mat_drug_drug.txt'.format(dataset), dtype=int)
     pp = np.loadtxt('../../data/RawData/luo/mat_protein_protein.txt'.format(dataset), dtype=int)
-
     adj = np.vstack((np.hstack((dd, dp)), np.hstack((dp.T, pp))))
-
     return sp.csr_matrix(adj + sp.eye(adj.shape[0])), dd.shape[0]
 
 
@@ -20,12 +19,9 @@ def load_yam_data(dataset):
     dp = np.loadtxt('../../data/RawData/Yamanishi/{}_admat_dgc.txt'.format(dataset), dtype=str, delimiter='\t')[1:, 1:].astype(np.int).T
     dd = np.loadtxt('../../data/RawData/Yamanishi/{}_simmat_dc.txt'.format(dataset), dtype=str, delimiter='\t')[1:, 1:].astype(np.float)
     pp = np.loadtxt('../../data/RawData/Yamanishi/{}_simmat_dg.txt'.format(dataset), dtype=str, delimiter='\t')[1:, 1:].astype(np.float)
-
     dd = np.where(dd < 0.5, 0, 1)
     pp = np.where(pp < 0.5, 0, 1)
-
     adj = np.vstack((np.hstack((dd, dp)), np.hstack((dp.T, pp))))
-
     return sp.csr_matrix(adj), dd.shape[0]
 
 
@@ -92,5 +88,7 @@ def change_unbalanced(adj, percent, dp_line, dataset):
 
     # 保存改变不平衡性后新的dp
     new_dp = adj[0:dp_line, dp_line:]
-    np.savetxt('../../data/datasets/{0}/feature/{0}_new_admat_dgc.txt'.format(dataset), new_dp, fmt='%d', delimiter='\t')
+    # if not os.path.exists('../../data/datasets/{0}/feature'.format(dataset)):
+    #     os.mkdir('../../data/datasets/{0}/feature'.format(dataset))
+    # np.savetxt('../../data/datasets/{0}/feature/{0}_new_admat_dgc.txt'.format(dataset), new_dp, fmt='%d', delimiter='\t')
     return sp.csr_matrix(adj.astype(np.int))
