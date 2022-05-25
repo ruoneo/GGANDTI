@@ -1,7 +1,7 @@
 """
 Parameters of preprocessing part
 """
-datasets = ['e','ic', 'gpcr', 'nr', 'luo']  # 'luo',
+datasets = ['ic', 'e', 'gpcr', 'nr', 'luo']  # 'luo',
 percent = 0  # Contribution parameters of imbalance
 seed = 9  # The seeds 0-9 used in dividing the dataset represent the 0-9 cross validation
 
