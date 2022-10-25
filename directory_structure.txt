@@ -1,0 +1,103 @@
+----GGANDTI\
+    |----cache\
+    |    |----e\
+    |    |    |----0fold\
+    |    |    |    |----e.pkl                      # The constructed BFS-tree
+                   ...
+    |    |    |----9fold\
+                        ...
+    |    |----gpcr\
+                   ...
+    |    |----ic\
+                   ...
+    |    |----luo\
+                   ...
+    |    |----nr\
+                   ...
+    |----data\
+    |    |----partitioned_data\
+    |    |    |----e\
+    |    |    |    |----0fold\
+    |    |    |    |    |----e_adj_train.pkl       # training set
+    |    |    |    |    |----e_pd_train.txt        # The training set, containing only drug-drug interactions, does not contain drug-drug association and target-target association
+    |    |    |    |    |----e_pre_train.emb       # The embedding corresponding to those node in the training set
+    |    |    |    |    |----e_test.txt            # Test set positive edges
+    |    |    |    |    |----e_test_neg.txt        # Test set negative edges
+    |    |    |    |    |----e_train.txt           # training set
+    |    |    |    |    |----e_val.txt             # Validating set positive edges
+    |    |    |    |    |----e_val_neg.txt         # Validating set negative edges
+    |    |    |    |    |----e_vgae_test.txt       # Test set positive edges of the encoder, which is used to verify the encoding effect
+    |    |    |    |    |----e_vgae_test_neg.txt   # Test set negative edges of the encoder, which is used to verify the encoding effect
+    |    |    |    |    |----e_vgae_train.txt      # The training set of the encoder, which is the same as that of the GAN above
+    |    |    |    |    |----e_vgae_val.txt        # Validating set positive edges of the encoder, used to check the encoding effect
+    |    |    |    |    |----e_vgae_val_neg.txt    # Validating set negative edges of the encoder, used to check the encoding effect
+                        ...
+    |    |    |    |----9fold\
+                             ...
+    |    |    |    |----feature\
+    |    |    |    |    |----e_feature.pkl         # According to the nodes in the test set, the feature matrix is constructed
+    |    |    |    |----orig\                      # The files in this folder are for easy viewing and statistics only, and are not involved in the training and validating process.
+    |    |    |    |    |----dp_line.txt           # Boundary between drug and target in adjacency matrix A and characteristic matrix X
+    |    |    |    |    |----e_adj_orig.pkl        # Constructed e Adjacency Matrix (saved by serialization)
+    |    |    |    |    |----e_adj_orig.txt        # Constructed e Adjacency Matrix
+    |    |    |----gpcr\
+                        ...
+    |    |    |----ic\
+                        ...
+    |    |    |----luo\
+                        ...
+    |    |    |----nr\
+                        ...
+    |    |----RawData\
+                   ...
+    |----results\
+    |    |----e\
+    |    |    |----0fold\
+    |    |    |    |----e.txt
+    |    |    |    |----e_dis_.emb
+    |    |    |    |----e_gen_.emb
+    |    |    |    |----fpr.txt
+    |    |    |    |----precision.txt
+    |    |    |    |----recall.txt
+    |    |    |    |----tpr.txt
+                   ...
+    |    |    |----9fold\
+                        ...
+    |    |    |----final_results\
+    |    |    |    |----final_result_0.txt
+                        ...
+    |    |    |    |----final_result_9.txt
+    |    |----gpcr\
+                   ...
+    |    |----ic\
+                   ...
+    |    |----luo\
+                   ...
+    |    |----nr\
+                   ...
+    |----saved_model\
+    |----src\
+    |    |----p1_preprocessing_data\
+    |    |    |----load_data.py
+    |    |    |----process_data.py
+    |    |    |----utils.py
+    |    |----p2_preprocessing_feature\
+    |    |    |----load_feature.py
+    |    |    |----process_feature.py
+    |    |----p3_get_latent_variable\
+    |    |    |----get_distribution.py
+    |    |    |----encoder.py
+    |    |    |----utils.py
+    |    |----p4_GAN\
+    |    |    |----link_prediction.py
+    |    |    |----model.py
+    |    |    |----train.py
+    |    |    |----utils.py
+    |    |----p5_other\
+    |    |    |----calculate_10_times_average.py
+    |    |----run.py
+    |    |----config.py
+    |----directory_structure.txt
+    |----generate_toc.py
+    |----ReadMe.md
+    |----requirements.txt
