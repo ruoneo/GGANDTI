@@ -12,7 +12,7 @@ A framework for drug-target interactions prediction.
 python run.py
 ```
 
-4. (Optional) Repeat steps 2 and 3 10 times to get the results of 10 times ten-fold CVs. The results are stored in results/{dataset}/final_results. Finally, execute the following command to calculate the average.
+4. Steps 2 and 3 are a complete ten-fold CVs. Each repetition of ten-fold CVs generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the 10 folds. Repeat steps 2 and 3 10 times to get the results of 10 iterations of ten-fold CVs. Finally, execute the following command to calculate the average.
 
 ```cmd
 python calculate_average_of_10_times_ten-foldCV.py
