@@ -12,11 +12,14 @@ A framework for drug-target interactions prediction.
 python run.py
 ```
 
-4. Steps 2 and 3 are a complete ten-fold CVs. Each repetition of ten-fold CVs generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the 10 folds. Repeat steps 2 and 3 10 times to get the results of 10 iterations of ten-fold CVs. Finally, execute the following command to calculate the average.
+4. Steps 2 and 3 are a complete ten-fold CV. Each repetition of ten-fold CV generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the 10 folds. Set the random number seed in `src/config.py`, and repeat steps 2 and 3 10 times to get the results of 10 times of ten-fold CV. Finally, execute the following command to calculate the average.
 
 ```cmd
-python calculate_average_of_10_times_ten-foldCV.py
+python calculate_average_of_10_times_of_ten-foldCV.py
 ```
+> Note: 
+> - ten-fold CV: The dataset is divided into ten parts, and 9 of them are used as training data and 1 is used as test data in turn for experimentation.
+> - 10 times of ten-fold CV: Repeat ten-fold CV 10 times with different random number seeds.
 
 ### Another usage:
 
@@ -44,9 +47,9 @@ python get_distribution.py
 ```cmd
 python train.py
 ```
-6. Compute the average of 10 results of ten-fold cross-validation. Note: It is necessary to repeat steps 1-5 10 times to calculate the average of 10 iterations of ten-foldCVs
+6. Compute the average of 10 times of ten-fold cross-validation. 
 ```cmd
-python calculate_average_of_10_times_ten-foldCV.py
+python calculate_average_of_10_times_of_ten-foldCV.py
 ```
 
 ### File descriptions:
@@ -80,9 +83,9 @@ A rough description of the file structure is listed below, more details can be s
     |    |    |----model.py                 The GAN model is defined here
     |    |    |----train.py                 GAN training and validation starts here
     |    |    |----utils.py
-    |    |----p5_other\                     Please pay attention to distinguish between "10-fold CVs" and "10 times 10-flod CVs". "10-fold CVs" is to divide the data into 10 parts, and take turns to do training set and validation set. "10 times 10-flod CVs" refers to is to repeat the previous operation 10 times
+    |    |----p5_other\                     Please pay attention to distinguish between "10-fold CV" and "10 times of 10-flod CV". "10-fold CV" is to divide the data into 10 parts, and take turns to do training set and validation set. "10 times of 10-flod CV" refers to is to repeat the previous operation 10 times
     |    |    |----calculate_average_of_10_times_10-foldCV.py   Calculate the mean of 10 iterations of the 10-fold CV. See usage step 4.
-    |    |----config.py                     By setting different seeds ten times, 10 times 10-fold divisions can be obtained. Each 10-fold CVs can get 10 groups of divided data, which can be used to complete a 10-fold CV.
+    |    |----config.py                     By setting different seeds ten times, 10 times 10-fold divisions can be obtained. Each 10-fold CV can get 10 groups of divided data, which can be used to complete a 10-fold CV.
     |    |----run.py                        A script that completes the framework training and validation process with one click.
     |----directory_structure.txt            Detailed directory structure
     |----ReadMe.md                          README
