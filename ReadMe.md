@@ -47,7 +47,7 @@ python get_distribution.py
 ```cmd
 python train.py
 ```
-6. Compute the average of 10 times of ten-fold cross-validation. 
+6. Compute the average of 10 times of ten-fold cross-validation. Note: You need to repeat the previous operation 10 times to have 10 results to calculate the average.
 ```cmd
 python calculate_average_of_10_times_of_ten-foldCV.py
 ```
