@@ -17,7 +17,7 @@
     |----data\
     |    |----partitioned_data\
     |    |    |----e\
-    |    |    |    |----0fold\
+    |    |    |    |----0fold\                     # The first fold of data that has been split
     |    |    |    |    |----e_adj_train.pkl       # training set
     |    |    |    |    |----e_pd_train.txt        # The training set, containing only drug-drug interactions, does not contain drug-drug association and target-target association
     |    |    |    |    |----e_pre_train.emb       # The embedding corresponding to those node in the training set
@@ -32,7 +32,7 @@
     |    |    |    |    |----e_vgae_val.txt        # Validating set positive edges of the encoder, used to check the encoding effect
     |    |    |    |    |----e_vgae_val_neg.txt    # Validating set negative edges of the encoder, used to check the encoding effect
                         ...
-    |    |    |    |----9fold\
+    |    |    |    |----9fold\                     # The ninth fold of data has been split
                              ...
     |    |    |    |----feature\
     |    |    |    |    |----e_feature.pkl         # According to the nodes in the test set, the feature matrix is constructed
@@ -52,10 +52,10 @@
                    ...
     |----results\
     |    |----e\
-    |    |    |----0fold\
-    |    |    |    |----e.txt
-    |    |    |    |----e_dis_.emb
-    |    |    |    |----e_gen_.emb
+    |    |    |----0fold\                          # That corresponds to the first fold above
+    |    |    |    |----e.txt                      # Evaluation results of the generator and discriminator
+    |    |    |    |----e_dis_.emb                 # Node embedding of the discriminator
+    |    |    |    |----e_gen_.emb                 # Node embedding of the generator
     |    |    |    |----fpr.txt
     |    |    |    |----precision.txt
     |    |    |    |----recall.txt
@@ -64,9 +64,9 @@
     |    |    |----9fold\
                         ...
     |    |    |----final_results\
-    |    |    |    |----final_result_0.txt
+    |    |    |    |----final_result_0.txt         # The result of ten-fold cross validation when the random number is set to 0
                         ...
-    |    |    |    |----final_result_9.txt
+    |    |    |    |----final_result_9.txt         # The result of ten-fold cross validation when the random number is set to 9
     |    |----gpcr\
                    ...
     |    |----ic\
