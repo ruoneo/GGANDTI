@@ -4,11 +4,6 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.metrics import auc
 
-import tensorflow.compat.v1 as tf
-
-flags = tf.app.flags
-FLAGS = flags.FLAGS
-
 
 def read_dataset(dataset, i):
     adj_train = pickle.load(open("../../data/partitioned_data/{0}/{1}fold/{0}_adj_train.pkl".format(dataset, i), "rb"))

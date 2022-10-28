@@ -63,9 +63,7 @@ for dataset in config.datasets:
         print("数据集" + dataset + "的第" + str(fold) + "折交叉验证完成!\n")
 
 '''
-每一折的结果都被写入了文件, 可以在 results/{dataset}/final_results 下查看
-
-The results of each fold are written to a file and can be viewed under results/{dataset}/final_results
+The results of each fold are written to a file and can be viewed under results/{dataset}/final_results. The following code reads the result from memory and writes it to the file.
 '''
 for dataset in config.datasets:
     auroc = []

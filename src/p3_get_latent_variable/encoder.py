@@ -1,8 +1,7 @@
 import numpy as np
 import tensorflow.compat.v1 as tf
 
-flags = tf.app.flags
-FLAGS = flags.FLAGS
+from src import config
 
 # global unique layer ID dictionary for layer name assignment
 _LAYER_UIDS = {}
@@ -57,30 +56,30 @@ class GCNModelVAE(Model):
 
     def _build(self):
         self.hidden1 = GraphConvolutionSparse(input_dim=self.input_dim,
-                                              output_dim=FLAGS.hidden1,
+                                              output_dim=config.hidden1,
                                               adj=self.adj,
                                               features_nonzero=self.features_nonzero,
                                               act=tf.nn.relu,
                                               dropout=self.dropout,
                                               logging=self.logging)(self.inputs)
 
-        self.z_mean = GraphConvolution(input_dim=FLAGS.hidden1,
-                                       output_dim=FLAGS.hidden2,
+        self.z_mean = GraphConvolution(input_dim=config.hidden1,
+                                       output_dim=config.hidden2,
                                        adj=self.adj,
                                        act=lambda x: x,
                                        dropout=self.dropout,
                                        logging=self.logging)(self.hidden1)
 
-        self.z_log_std = GraphConvolution(input_dim=FLAGS.hidden1,
-                                          output_dim=FLAGS.hidden2,
+        self.z_log_std = GraphConvolution(input_dim=config.hidden1,
+                                          output_dim=config.hidden2,
                                           adj=self.adj,
                                           act=lambda x: x,
                                           dropout=self.dropout,
                                           logging=self.logging)(self.hidden1)
 
-        self.z = self.z_mean + tf.random_normal([self.n_samples, FLAGS.hidden2]) * tf.exp(self.z_log_std)
+        self.z = self.z_mean + tf.random_normal([self.n_samples, config.hidden2]) * tf.exp(self.z_log_std)
 
-        self.reconstructions = InnerProductDecoder(input_dim=FLAGS.hidden2,
+        self.reconstructions = InnerProductDecoder(input_dim=config.hidden2,
                                                    act=lambda x: x,
                                                    logging=self.logging)(self.z)
 
@@ -91,7 +90,7 @@ class OptimizerVAE(object):
         labels_sub = labels
 
         self.cost = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=labels_sub, pos_weight=pos_weight))
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate)  # Adam Optimizer
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=config.learning_rate)  # Adam Optimizer
 
         # Latent loss
         self.log_lik = self.cost

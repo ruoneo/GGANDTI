@@ -16,15 +16,6 @@ import scipy.sparse as sp
 from src.p3_get_latent_variable import utils
 from src import config
 
-# Encoder Settings
-flags = tf.app.flags
-FLAGS = flags.FLAGS
-flags.DEFINE_float('learning_rate', 0.01, 'Initial learning rate.')
-flags.DEFINE_integer('epochs', 200, 'Number of epochs to train.')
-flags.DEFINE_integer('hidden1', 128, 'Number of units in hidden layer 1.')
-flags.DEFINE_integer('hidden2', 64, 'Number of units in hidden layer 2.')
-flags.DEFINE_float('weight_decay', 0., 'Weight for L2 loss on embedding matrix.')
-flags.DEFINE_float('dropout', 0., 'Dropout rate (1 - keep probability).')
 
 for dataset in config.datasets:
     for i in range(1):
@@ -35,6 +26,8 @@ for dataset in config.datasets:
         features = utils.read_features(dataset)
         if config.features == 0:
             features = sp.identity(features.shape[0])
+        if dataset == 'luo':
+            config.learning_rate = 0.001
         features = utils.sparse_to_tuple(features.tocoo())
 
         # 对训练集做标准化
@@ -68,17 +61,17 @@ for dataset in config.datasets:
         adj_label = adj + utils.sp.eye(adj.shape[0])  # 邻接矩阵加上单位矩阵
         adj_label = utils.sparse_to_tuple(adj_label)
 
-        # Train model
-        for epoch in tqdm(range(FLAGS.epochs)):
+        # Encoding
+        for epoch in tqdm(range(config.epochs)):
             t = time.time()
             # Construct feed dictionary
             feed_dict = utils.construct_feed_dict(adj_norm, adj_label, features, placeholders)
-            feed_dict.update({placeholders['dropout']: FLAGS.dropout})
+            feed_dict.update({placeholders['dropout']: config.dropout})
 
             # 运行单权重更新
             outs = sess.run([model.z, opt.opt_op, opt.grads_vars], feed_dict=feed_dict)
 
-            if epoch == FLAGS.epochs - 1:  # 最后一次
+            if epoch == config.epochs - 1:  # 最后一次
                 utils.write_distribution_to_file(outs[0], epoch, i, dataset)
 
         print("Encoding Finished!")
