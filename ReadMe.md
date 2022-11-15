@@ -4,20 +4,21 @@ A framework for drug-target interactions prediction.
 
 ### Usage:
 
-1. Release the dataset to the `src` sibling directory `data/RawData`
-2. Open run.py and setup hyper-parameters in `src/config.py`
-3. Use the following commands to perform training and validation.
+1. Activate the Python environment. (We provide a configured conda environment that can be downloaded from here https://drive.google.com/drive/folders/1zPY78onQRRlNKwVwMzlQuNP4wy95Lf50?usp=sharing)
+2. Set hyper-parameters in `src/config.py`
+3. Make sure you have switched to the root directory. Use the following commands to perform training and validation.
 
 ```cmd
-python run.py
+python src/run.py
 ```
 
-4. Steps 2 and 3 are a complete ten-fold CV. Each repetition of ten-fold CV generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the 10 folds. Set the random number seed in `src/config.py`, and repeat steps 2 and 3 10 times to get the results of 10 times of ten-fold CV. Finally, execute the following command to calculate the average.
+4. Steps 2 and 3 are a complete ten-fold CV. Set the random number seed in `src/config.py`, and repeat steps 2 and 3 10 times to get the results of 10 times of ten-fold CV. Each repetition of ten-fold CV generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the ten folds. Finally, execute the following command to calculate the average.
 
 ```cmd
-python calculate_average_of_10_times_of_ten-foldCV.py
+python src/p5_other/calculate_average_of_10_times_of_ten-foldCV.py
 ```
 > Note: 
+> - This project has been tested with ``win10+python3.7+cuda11.2+cudnn8.1.0+tf1.15``. If you are using a graphics card with Ampere architecture, such as RTX 3080, please download tensorflow 1.15.4 from https://github.com/NVIDIA/tensorflow. Nvidia maintains a tf1.x version to keep compatibility with ampere architecture graphics cards.
 > - ten-fold CV: The dataset is divided into ten parts, and 9 of them are used as training data and 1 is used as test data in turn for experimentation.
 > - 10 times of ten-fold CV: Repeat ten-fold CV 10 times with different random number seeds.
 
@@ -30,26 +31,26 @@ python calculate_average_of_10_times_of_ten-foldCV.py
 2. Divide the data
 
 ```cmd
-python process_data.py
+python src/p1_preprocessing_data/process_data.py
 ```
 
 3. The features are partitioned according to the partitioned data
 
 ```cmd
-python process_feature.py
+python src/p2_preprocessing_feature/process_feature.py
 ```
 
 4. Encoding features and data
 ```cmd
-python get_distribution.py
+python src/p3_get_latent_variable/get_distribution.py
 ```
 5. Training GAN
 ```cmd
-python train.py
+python src/p4_GAN/train.py
 ```
-6. Compute the average of 10 times of ten-fold cross-validation. Note: You need to repeat the previous operation 10 times to have 10 results to calculate the average.
+6. Compute the average of 10 times of ten-fold cross-validation. Note: You need to repeat the previous operation 10 times with different random number seed to have 10 results to calculate the average.
 ```cmd
-python calculate_average_of_10_times_of_ten-foldCV.py
+python src/p5_other/calculate_average_of_10_times_of_ten-foldCV.py
 ```
 
 ### File descriptions:
@@ -93,6 +94,7 @@ A rough description of the file structure is listed below, more details can be s
 ```
 
 ### Requirements:
+Python 3.7 is recommended.
 
     pip install -r requirements.txt
 
