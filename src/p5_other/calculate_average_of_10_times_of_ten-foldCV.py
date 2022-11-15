@@ -1,3 +1,9 @@
+import os
+import sys
+os.chdir('./src')
+sys.path.append(os.path.abspath('../../GGANDTI'))
+sys.path.append(os.path.abspath('../../GGANDTI/src'))
+os.chdir('./p5_other')
 from src import config
 
 '''
@@ -35,4 +41,4 @@ for dataset in config.datasets:
                     auprc_results.append(value)
     avg_roc_score = sum(auroc_results) / len(auroc_results)
     avg_prc_score = sum(auprc_results) / len(auprc_results)
-    print("百分比:{:.0%},数据集{}的十次验证平均结果: avg_auroc={:.5f},avg_auprc={:.5f}".format(config.percent, dataset, avg_roc_score, avg_prc_score))
+    print("Percentage: {:.0%}, average result of ten validations on dataset {}: avg_auroc={:.5f},avg_auprc={:.5f}".format(config.percent, dataset, avg_roc_score, avg_prc_score))

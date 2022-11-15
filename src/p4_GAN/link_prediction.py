@@ -19,9 +19,9 @@ class LinkPredictEval(object):
         test_edges_neg = utils.read_edges_from_file(self.test_neg_filename)
         test_edges.extend(test_edges_neg)
 
-        config.count = config.count + 1     # 用来定位
+        config.count = config.count + 1     # It is used to locate
 
-        # may exists isolated point
+        # May there exists isolated point
         score_res = []
         for i in range(len(test_edges)):
             score_res.append(np.dot(self.emd[test_edges[i][0]], self.emd[test_edges[i][1]]))
@@ -30,22 +30,22 @@ class LinkPredictEval(object):
         index_pos = test_label >= median
         index_neg = test_label < median
         test_label[index_pos] = 1
-        test_label[index_neg] = 0  # test_label代表预测标签
+        test_label[index_neg] = 0  # test_label represents the predicted label
         true_label = np.zeros(test_label.shape)
-        true_label[0: len(true_label) // 2] = 1  # true_label代表真实标签
+        true_label[0: len(true_label) // 2] = 1  # true_label represents the true label
 
-        # 计算召回率
+        # Calculate the recall rate
         recall = recall_score(true_label, test_label)
         # config.recalls[recall] = [true_label, test_label]
 
         score_res = utils.softmax(np.array(score_res))
 
-        # 计算AUC
+        # Calculating AUC
         fpr, tpr, thresholds = roc_curve(true_label, score_res)
         auroc = auc(fpr, tpr)
         config.aurocs[auroc] = [fpr, tpr, config.count]
 
-        # 计算AUPR
+        # Calculating AUPR
         precision_cur, recall_cur, thresholds = precision_recall_curve(true_label, score_res)
         auprc = auc(recall_cur, precision_cur)
         config.auprcs[auprc] = [recall_cur, precision_cur, config.count]

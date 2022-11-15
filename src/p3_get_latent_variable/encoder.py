@@ -1,6 +1,10 @@
 import numpy as np
 import tensorflow.compat.v1 as tf
-
+import sys,os
+os.chdir('./src')
+sys.path.append(os.path.abspath('../../GGANDTI'))
+sys.path.append(os.path.abspath('../../GGANDTI/src'))
+os.chdir('./p3_get_latent_variable')
 from src import config
 
 # global unique layer ID dictionary for layer name assignment

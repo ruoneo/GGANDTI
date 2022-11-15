@@ -9,7 +9,11 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = '1'
 import tensorflow.compat.v1 as tf
 
 tf.disable_eager_execution()
-
+import sys
+os.chdir('./src')
+sys.path.append(os.path.abspath('../../GGANDTI'))
+sys.path.append(os.path.abspath('../../GGANDTI/src'))
+os.chdir('./p4_GAN')
 from src.p4_GAN.model import GraphGAN
 from src import config
 from src.p4_GAN import utils
@@ -19,9 +23,9 @@ In p1_preprocessing_data/, we have completed the division of the dataset and sav
 so we read data directly from the corresponding fold during training.
 '''
 for dataset in config.datasets:
-    print("正在使用数据集: " + dataset + " 进行训练...")
+    print("Currently working on datasets: " + dataset)
     for fold in range(10):
-        print("正在进行数据集" + dataset + "的第" + str(fold) + "折交叉验证")
+        print(str(fold) + "-th times of ten-fold cross-validation on the dataset " + dataset + " in progress")
 
         utils.deal_filename(dataset, fold)
 
@@ -41,8 +45,6 @@ for dataset in config.datasets:
         config.dis_interval = config.n_epochs_dis  # sample new nodes for the discriminator for every dis_interval iterations
 
         '''
-        训练及验证的核心过程
-        
         The core process of training and validation
         '''
         graph_gan = GraphGAN()
@@ -60,7 +62,7 @@ for dataset in config.datasets:
         np.savetxt('../../results/{}/{}fold/recall.txt'.format(dataset, fold), config.auprcs[prcs_key[0]][0])
         np.savetxt('../../results/{}/{}fold/precision.txt'.format(dataset, fold), config.auprcs[prcs_key[0]][1])
 
-        print("数据集" + dataset + "的第" + str(fold) + "折交叉验证完成!\n")
+        print(str(fold) + "-th times of ten-fold cross-validation on the dataset " + dataset + " is done\n")
 
 '''
 The results of each fold are written to a file and can be viewed under results/{dataset}/final_results. The following code reads the result from memory and writes it to the file.
@@ -80,8 +82,8 @@ for dataset in config.datasets:
             lines = f.readlines()
             count = 0
             for line in lines:
-                if count in idx_gen:  # 说明遍历的是gen
-                    # 遍历line定位数字
+                if count in idx_gen:
+                    # To parse the resulting text, traverse the line to locate the numbers
                     position = utils.search_position(line)
                     auroc_value = float(line[position['auroc_start']:position['auroc_end']])
                     auprc_value = float(line[position['auprc_start']:])
@@ -101,9 +103,9 @@ for dataset in config.datasets:
         os.makedirs(path)
 
     with open(path + "final_result_{}.txt".format(config.seed), "w") as inf:
-        inf.write("十次auroc值:\n" + str(auroc) + "\n" + "十次auprc值:\n" + str(auprc) + "\n")
+        inf.write("Value of ten times auroc:\n" + str(auroc) + "\n" + "Value of ten times auprc:\n" + str(auprc) + "\n")
         inf.write("average_auroc={:.5f}".format(average_auroc) + "\naverage_auprc={:.5f}".format(average_auprc))
 
-    print("改变不平衡的比例: {:.0%}, ".format(config.percent) + dataset, end=" ")
+    print("The degree to which the imbalance is altered: {:.0%}, ".format(config.percent) + dataset, end=" ")
 
     print("average_auroc={:.5f}".format(average_auroc), "average_auprc={:.5f}".format(average_auprc))

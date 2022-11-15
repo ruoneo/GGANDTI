@@ -86,7 +86,7 @@ def print_info(gen_auroc, gen_auprc, dis_auroc, dis_auprc, epoch=-1, dis_loss=0,
 
 
 def deal_filename(dataset, fold):
-    # 数据部分
+    # data division
     config.train_filename = "../../data/partitioned_data/{0}/{1}fold/{0}_train.txt".format(dataset, fold)
     config.test_filename = "../../data/partitioned_data/{0}/{1}fold/{0}_test.txt".format(dataset, fold)
     config.test_neg_filename = "../../data/partitioned_data/{0}/{1}fold/{0}_test_neg.txt".format(dataset, fold)
@@ -94,7 +94,7 @@ def deal_filename(dataset, fold):
     config.pretrain_emb_filename_g = "../../data/partitioned_data/{0}/{1}fold/{0}_pre_train.emb".format(dataset, fold)
     config.initial_features = "../../data/partitioned_data/{0}/feature/{0}_feature.pkl".format(dataset)
 
-    # result部分
+    # result
     path = "../../results/{}/{}fold/".format(dataset, fold)
     if not os.path.exists(path):
         os.makedirs(path)
@@ -104,7 +104,7 @@ def deal_filename(dataset, fold):
     if os.path.exists(config.result_filename):
         os.remove(config.result_filename)
 
-    # 缓存和日志部分
+    # Cache and logging section
     path = "../../cache/{}/{}fold/".format(dataset, fold)
     if not os.path.exists(path):
         os.makedirs(path)

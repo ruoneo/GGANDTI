@@ -2,6 +2,9 @@ import os
 import sys
 import time
 
+os.chdir('./src')
+sys.path.append(os.path.abspath('../../GGANDTI'))
+sys.path.append(os.path.abspath('../../GGANDTI/src'))
 from src import config
 
 '''
@@ -17,42 +20,38 @@ sys.path.append(os.path.abspath('p3_get_latent_variable'))
 sys.path.append(os.path.abspath('p4_GAN'))
 sys.path.append(os.path.abspath('p5_other'))
 
-print("改变不平衡的比例：{:.0%}, 第{}次十折交叉验证开始..".format(config.percent, config.seed))
+print("The degree to which the imbalance is altered: {:.0%}, {}-th times of ten-fold cross-validation on the dataset is starting..".format(config.percent, config.seed))
 
 t_start = time.time()
 
-# 设置基准路径,记录初始导入模块
-os.chdir(os.path.abspath('.'))
+# Set the base path to record the initial imported module
+os.chdir(os.path.abspath('../'))
 
-# 处理数据
-os.chdir('p1_preprocessing_data')
-print("处理数据...")
+# processing data
+# os.chdir('p1_preprocessing_data')
+print("processing data...")
 from p1_preprocessing_data import process_data
+print("Processing data is completed!\n")
 
-print("处理数据完成!\n")
-
-# 处理特征
-os.chdir('../p2_preprocessing_feature')
-print("处理特征...")
+#  Feature Processing
+os.chdir('../../')
+print("Feature Processing...")
 from p2_preprocessing_feature import process_feature
+print("Processing features complete!\n")
 
-print("处理特征完成!\n")
-
-# 学习分布
-os.chdir('../p3_get_latent_variable')
-print("编码特征...")
+# Encoding adjacency matrix and initial features
+os.chdir('../../')
+print("Encoding adjacency matrix and initial features...")
 from p3_get_latent_variable import get_distribution
 
-print("特征编码完成!\n")
-
-# GAN训练
-os.chdir("../p4_GAN")
+#  Training GANs
+os.chdir("../../")
 if not os.path.exists(config.model_log):
     os.makedirs(config.model_log)
-print("GraphGAN训练...")
+print("Training GraphGAN...")
 from p4_GAN import train
 
-print("GraphGAN训练完成!")
-print("改变不平衡的比例：{:.0%}, 第{}次十折交叉验证结束!".format(config.percent, config.seed))
+print("GraphGAN Training done!\n")
+print("The degree to which the imbalance is altered: {:.0%}, {}-th times of ten-fold cross-validation on the dataset is done".format(config.percent, config.seed))
 
-print("用时：", time.time() - t_start)
+print("Times：", time.time() - t_start)

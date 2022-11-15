@@ -43,15 +43,15 @@ def is_1_diag(adj):
 
 def change_unbalanced(adj, percent, dp_line, dataset):
     """
-    note: percent控制屏蔽掉的节点所占的百分比
-    :param adj:
+    note: Percent controls the percentage of nodes that are masked. A percent=0 means that the balance of the original data set has not changed.
+    :param adj: original adjacency matrix
     :param percent:
-    :return: 返回去除部分已知关联的邻接矩阵
+    :return: Returns an adjacency matrix that removes part of the known association
     """
-    # 判断是否对称
+    # Judge whether it's symmetric
     # assert is_symmetry(adj.A)
     adj = adj - sp.dia_matrix((adj.diagonal()[np.newaxis, :], [0]), shape=adj.shape) + sp.eye(adj.shape[0])
-    # 判断对角线是否全为1
+    # Checks if the diagonals are all 1s
     assert is_1_diag(adj.A)
     adj = (sp.triu(adj) + sp.triu(adj).T - sp.eye(adj.shape[0])).A
 
@@ -88,7 +88,7 @@ def change_unbalanced(adj, percent, dp_line, dataset):
     #     adj[col][row] = 0
     #     count += 1
 
-    # 保存改变不平衡性后新的dp
+    # Save the new dp after changing the imbalance
     new_dp = adj[0:dp_line, dp_line:]
     # if not os.path.exists('../../data/partitioned_data/{0}/feature'.format(dataset)):
     #     os.mkdir('../../data/partitioned_data/{0}/feature'.format(dataset))

@@ -19,7 +19,7 @@ from src import config
 
 for dataset in config.datasets:
     for i in range(1):
-        print("当前正在操作的数据集: " + dataset)
+        print("Currently working on datasets: " + dataset)
         # 读数据
         adj_orig = utils.read_orig(dataset)
         adj, _, _, _ = utils.read_dataset(dataset, i)  # , val_edges, val_edges_false
@@ -30,10 +30,10 @@ for dataset in config.datasets:
             config.learning_rate = 0.001
         features = utils.sparse_to_tuple(features.tocoo())
 
-        # 对训练集做标准化
+        # Standardize the training set
         adj_norm = utils.normalization(adj)
 
-        # 定义placeholders占位符
+        # Define placeholders
         placeholders = {
             'features': tf.sparse_placeholder(tf.float32),
             'adj': tf.sparse_placeholder(tf.float32),
@@ -54,11 +54,11 @@ for dataset in config.datasets:
                                model=model, num_nodes=adj.shape[0],
                                pos_weight=pos_weight,
                                norm=norm)
-        # 初始化会话
+        # Initializing a session
         sess = tf.Session()
         sess.run(tf.global_variables_initializer())
 
-        adj_label = adj + utils.sp.eye(adj.shape[0])  # 邻接矩阵加上单位矩阵
+        adj_label = adj + utils.sp.eye(adj.shape[0])  # The adjacency matrix plus the identity matrix to embed self-information.
         adj_label = utils.sparse_to_tuple(adj_label)
 
         # Encoding
@@ -68,10 +68,10 @@ for dataset in config.datasets:
             feed_dict = utils.construct_feed_dict(adj_norm, adj_label, features, placeholders)
             feed_dict.update({placeholders['dropout']: config.dropout})
 
-            # 运行单权重更新
+            # Run the single weight update
             outs = sess.run([model.z, opt.opt_op, opt.grads_vars], feed_dict=feed_dict)
 
-            if epoch == config.epochs - 1:  # 最后一次
+            if epoch == config.epochs - 1:  # the last time
                 utils.write_distribution_to_file(outs[0], epoch, i, dataset)
 
         print("Encoding Finished!")
@@ -80,4 +80,4 @@ for dataset in config.datasets:
         sess.close()
         gc.collect()
 
-        print(dataset + "数据集的潜在变量已获得!\n".format(i))
+        print("The latent variables of the dataset" + dataset + "have been obtained!\n".format(i))
