@@ -4,7 +4,8 @@ A framework for drug-target interactions prediction.
 
 ### Usage:
 
-1. Activate the Python environment. (We provide a configured conda environment that can be downloaded from here https://drive.google.com/drive/folders/1zPY78onQRRlNKwVwMzlQuNP4wy95Lf50?usp=sharing)
+1. Configure and activate the Python environment according to the list of requirements. 
+> If you don't want to configure the python environment yourself, you can download our already configured conda environment from here https://drive.google.com/drive/folders/1zPY78onQRRlNKwVwMzlQuNP4wy95Lf50?usp=sharing.
 2. Set hyper-parameters in `src/config.py`
 3. Make sure you have switched to the root directory of the project. Use the following commands to perform training and validation.
 
