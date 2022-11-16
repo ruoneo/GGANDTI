@@ -2,8 +2,8 @@ import os
 import pickle
 import sys
 os.chdir('./src')
-sys.path.append(os.path.abspath('../../GGANDTI'))
-sys.path.append(os.path.abspath('../../GGANDTI/src'))
+sys.path.append(os.path.abspath('../../GGANDTI-main'))
+sys.path.append(os.path.abspath('../../GGANDTI-main/src'))
 os.chdir('./p2_preprocessing_feature')
 from src import config
 from src.p2_preprocessing_feature.load_feature import load_yam_feature, load_luo_feature

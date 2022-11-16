@@ -5,8 +5,8 @@ import numpy as np
 
 import sys
 os.chdir('./src')
-sys.path.append(os.path.abspath('../../GGANDTI'))
-sys.path.append(os.path.abspath('../../GGANDTI/src'))
+sys.path.append(os.path.abspath('../../GGANDTI-main'))
+sys.path.append(os.path.abspath('../../GGANDTI-main/src'))
 os.chdir('./p1_preprocessing_data')
 from src import config
 import scipy.sparse as sp

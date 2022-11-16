@@ -3,8 +3,8 @@ import sys
 import time
 
 os.chdir('./src')
-sys.path.append(os.path.abspath('../../GGANDTI'))
-sys.path.append(os.path.abspath('../../GGANDTI/src'))
+sys.path.append(os.path.abspath('../../GGANDTI-main'))
+sys.path.append(os.path.abspath('../../GGANDTI-main/src'))
 from src import config
 
 '''

@@ -2,8 +2,8 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 import sys,os
 os.chdir('./src')
-sys.path.append(os.path.abspath('../../GGANDTI'))
-sys.path.append(os.path.abspath('../../GGANDTI/src'))
+sys.path.append(os.path.abspath('../../GGANDTI-main'))
+sys.path.append(os.path.abspath('../../GGANDTI-main/src'))
 os.chdir('./p3_get_latent_variable')
 from src import config
 

@@ -1,8 +1,8 @@
 import os
 import sys
 os.chdir('./src')
-sys.path.append(os.path.abspath('../../GGANDTI'))
-sys.path.append(os.path.abspath('../../GGANDTI/src'))
+sys.path.append(os.path.abspath('../../GGANDTI-main'))
+sys.path.append(os.path.abspath('../../GGANDTI-main/src'))
 os.chdir('./p5_other')
 from src import config
 
