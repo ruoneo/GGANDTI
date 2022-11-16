@@ -6,7 +6,7 @@ A framework for drug-target interactions prediction.
 
 1. Activate the Python environment. (We provide a configured conda environment that can be downloaded from here https://drive.google.com/drive/folders/1zPY78onQRRlNKwVwMzlQuNP4wy95Lf50?usp=sharing)
 2. Set hyper-parameters in `src/config.py`
-3. Make sure you have switched to the root directory. Use the following commands to perform training and validation.
+3. Make sure you have switched to the root directory of the project. Use the following commands to perform training and validation.
 
 ```cmd
 python src/run.py
@@ -18,13 +18,13 @@ python src/run.py
 python src/p5_other/calculate_average_of_10_times_of_ten-foldCV.py
 ```
 > Note: 
-> - This project has been tested with ``win10+python3.7+cuda11.2+cudnn8.1.0+tf1.15``. If you are using a graphics card with Ampere architecture, such as RTX 3080, please download tensorflow 1.15.4 from https://github.com/NVIDIA/tensorflow. Nvidia maintains a tf1.x version to keep compatibility with ampere architecture graphics cards.
+> - This project has been tested with ``win10+RTX3080+python3.7+cuda11.2+cudnn8.1.0+tf1.15``. If you are using a graphics card with Ampere architecture, such as RTX 3080, please download tensorflow 1.15.4 from https://github.com/NVIDIA/tensorflow. Nvidia maintains a tf1.x version to keep compatibility with ampere architecture graphics cards.
 > - ten-fold CV: The dataset is divided into ten parts, and 9 of them are used as training data and 1 is used as test data in turn for experimentation.
 > - 10 times of ten-fold CV: Repeat ten-fold CV 10 times with different random number seeds.
 
 ### Another usage:
 
-> The code has been structured so that you can clearly see the result of each step. Therefore, the following usage is also feasible. But it is recommended to use the above usage
+> The code has been structured so that you can clearly see the result of each step. Therefore, the following usage is also feasible. But it is recommended to use the above usage.
 
 1. Set the parameters in 'src/config.py'
 
@@ -105,7 +105,7 @@ If you want to use other data, you have to provide or construct
 - an N by N adjacency matrix (N is the number of nodes), and
 - an N by D feature matrix (D is the number of features per node) -- optional
 
-Have a look at the src/p1_preprocessing_data/load_data.py and src/p2_preprocessing_feature/load_feature.py for an example.
+Have a look at the `src/p1_preprocessing_data/load_data.py` and `src/p2_preprocessing_feature/load_feature.py` for an example.
 
 In this example, gold standard datasets of Yamanishi et al. is available on (http://web.kuicr.kyoto-u.ac.jp/supp/yoshi/drugtarget/) and datasets of Luo et al. is available on
 ( https://github.com/luoyunan/DTINet).  
