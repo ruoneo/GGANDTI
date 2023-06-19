@@ -13,7 +13,7 @@ A framework for drug-target interactions prediction.
 python src/run.py
 ```
 
-4. Steps 2 and 3 are a complete ten-fold CV. Set the random number seed in `src/config.py`, and repeat steps 2 and 3 10 times to get the results of 10 times of ten-fold CV. Each repetition of ten-fold CV generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the ten folds. Finally, execute the following command to calculate the average.
+4. Steps 2 and 3 are a ten-fold CV. Set the random number seed in `src/config.py`, and repeat steps 2 and 3 10 times to get the results of 10 times of ten-fold CV. Each repetition of ten-fold CV generates a file (results/{dataset}/final_results/final_result_{0}.txt) that holds the results for each fold and the average of the ten folds. Finally, execute the following command to calculate the average.
 
 ```cmd
 python src/p5_other/calculate_average_of_10_times_of_ten-foldCV.py
