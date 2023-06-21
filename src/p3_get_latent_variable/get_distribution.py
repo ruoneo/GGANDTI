@@ -18,6 +18,7 @@ from src import config
 
 
 for dataset in config.datasets:
+    config.dataset_temp = dataset  # This is a shared temporary variable that controls whether the reconstruction loss of X is considered
     for i in range(1):
         print("Currently working on datasets: " + dataset)
         # 读数据
@@ -38,6 +39,7 @@ for dataset in config.datasets:
             'features': tf.sparse_placeholder(tf.float32),
             'adj': tf.sparse_placeholder(tf.float32),
             'adj_orig': tf.sparse_placeholder(tf.float32),
+            'adj_x': tf.sparse_placeholder(tf.float32),
             'dropout': tf.placeholder_with_default(0., shape=())
         }
 
@@ -49,8 +51,9 @@ for dataset in config.datasets:
 
         # Optimizer
         with tf.name_scope('optimizer'):
-            opt = OptimizerVAE(preds=model.reconstructions,
+            opt = OptimizerVAE(preds=[model.reconstructions,model.reconstructions_x],
                                labels=tf.reshape(tf.sparse_tensor_to_dense(placeholders['adj_orig'], validate_indices=False), [-1]),
+                               adj_x=tf.reshape(tf.sparse_tensor_to_dense(placeholders['adj_x'], validate_indices=False), [-1]),
                                model=model, num_nodes=adj.shape[0],
                                pos_weight=pos_weight,
                                norm=norm)
@@ -59,13 +62,14 @@ for dataset in config.datasets:
         sess.run(tf.global_variables_initializer())
 
         adj_label = adj + utils.sp.eye(adj.shape[0])  # The adjacency matrix plus the identity matrix to embed self-information.
-        adj_label = utils.sparse_to_tuple(adj_label)
+        adj_label_A = utils.sparse_to_tuple(adj_label)
+        adj_label_x = features
 
         # Encoding
         for epoch in tqdm(range(config.epochs)):
             t = time.time()
             # Construct feed dictionary
-            feed_dict = utils.construct_feed_dict(adj_norm, adj_label, features, placeholders)
+            feed_dict = utils.construct_feed_dict(adj_norm, adj_label_A,adj_label_x, features, placeholders)
             feed_dict.update({placeholders['dropout']: config.dropout})
 
             # Run the single weight update

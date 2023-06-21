@@ -45,12 +45,13 @@ def sparse_to_tuple(sparse_mx):
     return coords, values, shape
 
 
-def construct_feed_dict(adj_normalized, adj, features, placeholders):
+def construct_feed_dict(adj_normalized, adj,adj_x, features, placeholders):
     # construct feed dictionary
     feed_dict = dict()
     feed_dict.update({placeholders['features']: features})
     feed_dict.update({placeholders['adj']: adj_normalized})
     feed_dict.update({placeholders['adj_orig']: adj})
+    feed_dict.update({placeholders['adj_x']: adj_x})
     return feed_dict
 
 

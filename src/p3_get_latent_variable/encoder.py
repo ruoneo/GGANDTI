@@ -87,13 +87,25 @@ class GCNModelVAE(Model):
                                                    act=lambda x: x,
                                                    logging=self.logging)(self.z)
 
+        if config.dataset_temp != "luo": # Luo's dataset does not apply a transformation strategy and does not need to consider the X reconstruction loss
+            self.reconstructions_x = InnerProductDecoder(input_dim=config.hidden2,
+                                                       act=lambda x: x,
+                                                       logging=self.logging)(self.z)
+        else:
+            self.reconstructions_x = 0
 
 class OptimizerVAE(object):
-    def __init__(self, preds, labels, model, num_nodes, pos_weight, norm):
-        preds_sub = preds
+    def __init__(self, preds, labels,adj_x, model, num_nodes, pos_weight, norm):
+        preds_sub = preds[0]
+        preds_sub_x = preds[1]
         labels_sub = labels
 
-        self.cost = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=labels_sub, pos_weight=pos_weight))
+        self.cost_A = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=labels_sub, pos_weight=pos_weight))
+        if config.dataset_temp != "luo": # Luo's dataset does not apply a transformation strategy and does not need to consider the X reconstruction loss
+            self.cost_x = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=adj_x, pos_weight=pos_weight))
+        else:
+            self.cost_x = 0
+        self.cost = self.cost_A+self.cost_x
         self.optimizer = tf.train.AdamOptimizer(learning_rate=config.learning_rate)  # Adam Optimizer
 
         # Latent loss

@@ -2,7 +2,7 @@
 All hyperparameters
 """
 
-datasets = ['e']  # , 'e','ic', 'gpcr', 'nr', 'luo'
+datasets = ['e','ic', 'gpcr', 'nr'] #, 'luo']
 percent = 0  # Contribution parameters of imbalance. example: 0 indicates the original data without changing the imbalance degree; 0.5 represents the data with 50% of the positive sample masked
 seed = 0  # The seeds 0-9 used in dividing the dataset represent the (0-9)-th times 10-fold cross validation. The number here refers to the seed of the dataset that shuffles each CV (necessary) and also refers to the number in the file name under results/{e}/final_results (unnecessary).
 
@@ -85,3 +85,6 @@ hidden2 = 64
 weight_decay = 0
 dropout = 0
 features = 1
+
+
+dataset_temp = None # This is a shared temporary variable that controls whether the reconstruction loss of X is considered
