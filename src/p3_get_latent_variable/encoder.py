@@ -87,7 +87,7 @@ class GCNModelVAE(Model):
                                                    act=lambda x: x,
                                                    logging=self.logging)(self.z)
 
-        if config.dataset_temp != "luo": # Luo's dataset does not apply a transformation strategy and does not need to consider the X reconstruction loss
+        if config.dataset_temp != "luo": # Here you can control whether to reconstruct X
             self.reconstructions_x = InnerProductDecoder(input_dim=config.hidden2,
                                                        act=lambda x: x,
                                                        logging=self.logging)(self.z)
@@ -101,7 +101,7 @@ class OptimizerVAE(object):
         labels_sub = labels
 
         self.cost_A = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=labels_sub, pos_weight=pos_weight))
-        if config.dataset_temp != "luo": # Luo's dataset does not apply a transformation strategy and does not need to consider the X reconstruction loss
+        if config.dataset_temp != "luo": # Here you can control whether to consider the reconstruction loss of X
             self.cost_x = norm * tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=preds_sub, targets=adj_x, pos_weight=pos_weight))
         else:
             self.cost_x = 0
